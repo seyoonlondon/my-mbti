@@ -1,5 +1,6 @@
-import streamlit as st
 import random
+
+import streamlit as st
 
 st.set_page_config(page_title="MBTI 포켓몬 추천", page_icon="✨", layout="centered")
 
@@ -71,22 +72,47 @@ MBTI_POKEMON = {
     ],
 }
 
+# MBTI 성격 궁합 데이터 (가장 잘 맞는 유형)
+MBTI_COMPATIBILITY = {
+    "INTJ": {"best": "ENFP", "reason": "INTJ의 논리와 ENFP의 상상력이 만나 서로의 부족한 부분을 채워주는 환상의 궁합이에요."},
+    "INTP": {"best": "ENTJ", "reason": "INTP의 아이디어를 ENTJ의 추진력이 현실로 만들어주는 최고의 시너지 궁합이에요."},
+    "ENTJ": {"best": "INTP", "reason": "ENTJ의 리더십과 INTP의 창의적 사고가 만나면 못할 일이 없어요."},
+    "ENTP": {"best": "INFJ", "reason": "ENTP의 도전정신과 INFJ의 통찰력이 서로를 성장시키는 궁합이에요."},
+    "INFJ": {"best": "ENTP", "reason": "INFJ의 깊이와 ENTP의 발랄한 에너지가 균형을 이루는 조합이에요."},
+    "INFP": {"best": "ENFJ", "reason": "INFP의 감성을 ENFJ가 따뜻하게 이해하고 이끌어주는 편안한 궁합이에요."},
+    "ENFJ": {"best": "INFP", "reason": "ENFJ의 배려심이 INFP의 마음을 가장 잘 헤아려줄 수 있어요."},
+    "ENFP": {"best": "INTJ", "reason": "ENFP의 자유로움과 INTJ의 안정감이 서로에게 신선한 자극이 돼요."},
+    "ISTJ": {"best": "ESFP", "reason": "ISTJ의 꾸준함과 ESFP의 즉흥성이 만나 삶에 활력을 더해줘요."},
+    "ISFJ": {"best": "ESFP", "reason": "ISFJ의 세심함과 ESFP의 밝은 에너지가 서로를 편안하게 해줘요."},
+    "ESTJ": {"best": "ISFP", "reason": "ESTJ의 추진력과 ISFP의 유연함이 좋은 균형을 이뤄요."},
+    "ESFJ": {"best": "ISFP", "reason": "ESFJ의 다정함과 ISFP의 감성이 서로 잘 통하는 궁합이에요."},
+    "ISTP": {"best": "ESTJ", "reason": "ISTP의 실용성과 ESTJ의 조직력이 만나 안정적인 관계를 만들어요."},
+    "ISFP": {"best": "ESTJ", "reason": "ISFP의 자유로운 감성을 ESTJ가 든든하게 받쳐줄 수 있어요."},
+    "ESTP": {"best": "ISFJ", "reason": "ESTP의 모험심과 ISFJ의 차분함이 서로를 보완해줘요."},
+    "ESFP": {"best": "ISTJ", "reason": "ESFP의 즉흥성과 ISTJ의 안정감이 만나 균형잡힌 관계가 돼요."},
+}
+
+def pokemon_image_url(pokemon):
+    """포켓몬 딕셔너리를 받아 공식 아트워크 이미지 URL을 반환합니다."""
+    return f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{pokemon['dex']}.png"
+
+
 st.title("✨ MBTI 포켓몬 추천기")
 st.write("당신의 MBTI를 선택하면 어울리는 포켓몬을 추천해드려요!")
+st.caption("👈 왼쪽 사이드바에서 'MBTI 궁합 추천' 페이지로 이동할 수 있어요.")
 
 mbti_list = list(MBTI_POKEMON.keys())
 selected_mbti = st.selectbox("당신의 MBTI를 선택하세요", mbti_list)
 
 if st.button("포켓몬 추천받기 🎁"):
     pokemon = random.choice(MBTI_POKEMON[selected_mbti])
-    image_url = f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/{pokemon['dex']}.png"
 
     st.markdown("---")
     st.subheader(f"{selected_mbti} 유형에게 어울리는 포켓몬은...")
 
     col1, col2 = st.columns([1, 1.4])
     with col1:
-        st.image(image_url, width=220)
+        st.image(pokemon_image_url(pokemon), width=220)
     with col2:
         st.markdown(f"## {pokemon['emoji']} {pokemon['name']}")
         st.write(pokemon["desc"])
