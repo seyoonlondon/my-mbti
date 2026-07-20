@@ -1,6 +1,10 @@
+import os
 import random
+import sys
 
 import streamlit as st
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from pokemon_data import MBTI_COMPATIBILITY, MBTI_POKEMON, pokemon_image_url
 
